@@ -1,0 +1,65 @@
+body #wrapper #login-div{
+    visibility: hidden;
+    background: url("../images/login-background.png");
+    background-repeat: no-repeat;
+    width: 300px;
+    position: absolute;
+    top: 30px;
+    left: 300px;
+    font-family: "Mesquite std", Arial, sans-serif;
+    overflow: hidden;
+    overflow-style: marquee-block;
+    text-align: center;
+}
+
+    body #wrapper #login-div .name-paragraph{
+        margin-top: 120px;
+        font-size: 40px;
+        color: red;
+        text-shadow: 2px 2px 2px #000;
+        -webkit-text-shadow: 2px 2px 2px #000;
+    }
+
+    body #wrapper #login-div #nick-input{
+        font-family: "Mesquite std", Arial, sans-serif;
+        text-align: center;
+        margin: 10px;
+        padding: 5px;
+        font-size: 30px;
+        width: 200px;
+        border: 2px solid red;
+        border-radius: 15px;
+        box-shadow: 2px 2px 2px #000;
+        -webkit-box-shadow: 2px 2px 2px #000;
+    }
+    body #wrapper #login-div #nick-input:active,
+    body #wrapper #login-div #nick-input:focus{
+        outline: 0;
+    }
+
+    /*    START BUTTON **/
+    body #wrapper #login-div #start-btn{
+        margin: auto;
+        display: block;
+        width: 100px;
+        border: 2px solid #000;
+        font-size: 30px;
+        border-radius: 10px;
+        background-color: rgba(255, 0, 0, 0.8);
+        box-shadow: 0px 0px 5px black;
+        -webkit-box-shadow: 0px 0px 5px black;
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0); -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-transition-duration: 0.3s;
+        transition-duration: 0.3s;
+        -webkit-transition-property: transform;
+        transition-property: transform;
+
+    }
+    body #wrapper #login-div #start-btn:hover{
+        cursor: pointer;
+        -webkit-transform: scale(1.1);
+        transform: scale(1.1);
+    }
+

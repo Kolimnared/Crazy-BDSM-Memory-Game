@@ -1,0 +1,64 @@
+/** MEMORY BOARD*/
+body #wrapper #memory-board-wrapper{
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 610px;
+    height: 600px;
+    overflow: hidden;
+    overflow-style: marquee-block;
+}
+    body #wrapper #memory-board-wrapper  #loading-bar{
+        width: 300px;
+        height: 30px;
+        border: 2px solid black;
+        margin: auto;
+        border-radius: 5px;
+        background: gray;
+    }
+        body #wrapper #memory-board-wrapper #loading-bar #loading-bar-progress{
+            background: -webkit-linear-gradient(#b81900, #ff0005);
+            background:    -moz-linear-gradient(#b81900, #ff0005);
+            background:         linear-gradient(#b81900, #ff0005);
+            border-right: 1px solid #b81900;
+            height: 30px;
+            width: 0;
+        }
+
+    body #wrapper #memory-board-wrapper #memory-board{
+        visibility: hidden;
+        width: 200px;
+        height: 150px;
+        border: 3px solid red;
+        margin:auto;
+    }
+
+/** INFO **/
+
+body #wrapper #memory-board-wrapper .info{
+    display: inline-block;
+    width: 200px;
+    height: 30px;
+    color: red;
+    font-size: 30px;
+}
+
+body #wrapper #memory-board-wrapper #level-info{
+    text-align: center;
+}
+
+body #wrapper #memory-board-wrapper #score-info{
+    text-align: right;
+}
+
+body #wrapper #memory-board-wrapper div[class^="tile"]{
+    display: inline-block;
+    width: 90px;
+    height: 90px;
+    margin: 5px;
+    background-image: url("../game/tile_bg.jpg");
+    background-size: 100%;
+    overflow: hidden;
+    font-size: 30px;
+}
