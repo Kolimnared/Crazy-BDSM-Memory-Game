@@ -6,12 +6,24 @@
     <link type="text/css" rel="stylesheet" href="style/stylesheet.css"/>
     <link type="text/css" rel="stylesheet" href="style/new-game-css.css"/>
     <link type="text/css" rel="stylesheet" href="style/memory-board-style.css"/>
-
+    <link type="text/css" rel="stylesheet" href="style/custom-alerts-style.css"/>
 
 </head>
 <body>
     <div id="wrapper">
         <div id="mutter" ><img src="images/sounds-on.png" alt="S"/></div>
+<!------------ CUSTON ALERT, DIALOG AND CONFIRM BOX ----->
+
+        <div id="dialog-overlay"></div>
+        <div id="dialog-box">
+            <div>
+                <div id="dialog-box-head"></div>
+                <div id="dialog-box-body"></div>
+                <div id="dialog-box-foot"></div>
+            </div>
+        </div>
+<!------------------------------------------------------->
+
         <aside>
             <nav>
                 <ul>
@@ -35,6 +47,7 @@
 
     </div>
 </body>
+<script src="script/custom-alerts.js"></script>
 <script src="script/start-screen-script.js"></script>
 <script src="script/memory-board-css.js"></script>
 </html>
