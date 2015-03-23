@@ -2,12 +2,13 @@
  * Created by user on 13.3.2015 г..
  */
 /************************* CONSTRUCTORS *************************/
-function Levels(boardWidth, boardHeight, timeInSec, tiles){
+function Levels(lvl, boardWidth, timeInSec, tiles){
+    this.level = lvl;
     this.boardWidth = boardWidth;
-    this.boardHeight = boardHeight;
     this.timeInSec = timeInSec;
     this.tilesCount = tiles;
     this.cardsFlipped = 0;
+    this.playing = false;
 }
 
 function Card(pair, id, imgUrl){
@@ -16,10 +17,36 @@ function Card(pair, id, imgUrl){
     image.setAttribute('backside', imgUrl );
     image.setAttribute("pairID", pair);
     image.setAttribute("flipped", "false");
-   // image.addEventListener('click', hitMe);
 
     return image;
 }
+
+var Board = new function mBoard(){
+    this.memory_board_wrapper = document.getElementById("memory-board-wrapper");
+    this.memory_board =  document.getElementById("memory-board");
+    this.playerName = document.getElementById("player-name");
+    this.lvlInfo = document.getElementById("level-info");
+    this.scoreInfo = document.getElementById("score-info");
+};
+
+var timer = new function Timer(){
+    var progress = document.getElementById("loading-bar-progress");
+    this.start = function(Level){
+        Level.playing = true;
+        progress.style.width = "0%";
+        progress.style.transition = "width " + Level.timeInSec +"s linear 0s";
+        progress.style.width = "100%";
+    };
+    this.stop = function(Level){
+        if(Level.playing === true){
+            gameOver();
+        }
+    };
+    this.reset = function(){
+        progress.style.transition = "width 0s linear 0s";
+        progress.style.width = "0%";
+    }
+};
 /******************************************************************/
 
 Array.prototype.shuffle = function () {
@@ -30,7 +57,7 @@ Array.prototype.shuffle = function () {
         this[j] = this[i];
         this[i] = temp;
     }
-}
+};
 
 function generateDeck(count){
     var Deck = [];
@@ -45,27 +72,6 @@ function generateDeck(count){
 
 }
 
-function startLevel(lvl, memory_board){
-    var lvlWidth  = [300, 400, 500, 400, 400, 500, 600, 600];
-    var lvlHeight = [200, 200, 200, 300, 400, 400, 400, 500];
-    var lvlTime   = [10, 12, 14, 16, 20, 26, 30, 40];
-    var lvlTiles = [6, 8, 10, 12, 16, 20, 24, 30];
-
-    var Level = new Levels(lvlWidth[lvl], lvlHeight[lvl], lvlTime[lvl], lvlTiles[lvl]);
-
-    memory_board.style.width = Level.boardWidth + "px";
-    memory_board.style.height = "0";
-    memory_board.style.visibility = "visible";
-    slideOpen(memory_board, Level.boardHeight, 1.2);
-    var Deck = generateDeck(Level.tilesCount);
-    setTimeout(function(){
-        addTiles(memory_board, Deck, 0, Level);
-    }, 1200);
-
-
-
-}
-
 function addTiles(board, Deck, i, Level){
     if(i < Level.tilesCount){
         setTimeout(function(){
@@ -74,24 +80,31 @@ function addTiles(board, Deck, i, Level){
 
             if(i === (Level.tilesCount-1) ){
              startPlaying(Deck, Level);
-
             }
         }, 100);
     }
 }
 
-
-
 function flipTile(){
 
 }
 
-function runTimer(timeInSec){
-    var progress = document.getElementById("loading-bar-progress");
-    progress.style.width = "0%";
-    progress.style.transition = "width " + timeInSec +"s linear 0s";
-    progress.style.width = "100%";
+function gameOver(){
+    alert('GAME OVER');
+    location.reload();
 }
+
+function levelUp(Level, Deck){
+    var nextLevel = Level.level;
+    Level = null;
+    Deck = null;
+
+    timer.reset();
+    alert('Level: ' + (nextLevel + 1));
+    memoryBoard(nextLevel);
+}
+
+
 
 function startPlaying(Deck, Level){
     var cardsOpened = 0;
@@ -100,6 +113,11 @@ function startPlaying(Deck, Level){
     for(var i = 0; i < Deck.length; i++){
         Deck[i].addEventListener('click', hitMe);
     }
+
+    setTimeout(function(){
+        timer.stop(Level, Deck);
+    }, Level.timeInSec*1000);
+    timer.start(Level);
 
     function hitMe(e){
         if(this.getAttribute('flipped') === "false"){
@@ -112,15 +130,13 @@ function startPlaying(Deck, Level){
                 cardsOpened = 0;
                 if(this.getAttribute('pairId') === tempCard.getAttribute('pairID')){
                     Level.cardsFlipped += 2;
+                    Player.score += 2*Level.level;
+                    Board.scoreInfo.innerHTML = "Score: " + Player.score;
                     if(Level.tilesCount === Level.cardsFlipped){
-                        alert('ok');
+                        Level.playing = false;
+                        levelUp(Level,  Deck);
                     }
                 }else{
-
-                     /*   this.setAttribute('flipped', "false");
-                        this.style.background = "url('images/tile_bg.jpg')";
-                        tempCard.setAttribute('flipped', "false");
-                        tempCard.style.background = "url('images/tile_bg.jpg')";*/
                         flip2Back(this, tempCard);
                 }
             }
@@ -137,19 +153,29 @@ function startPlaying(Deck, Level){
     }
 }
 
-
+function winn(){
+    alert('You beat the game madafaka');
+}
 /***-------------------------------- MAIN BOARD --------------------------------***/
-function memoryBoard(){
-    var memory_board_wrapper = document.getElementById("memory-board-wrapper");
-    var memory_board =  document.getElementById("memory-board");
-    var playerName = document.getElementById("player-name");
-    var lvlInfo = document.getElementById("level-info");
-    var scoreInfo = document.getElementById("score-info");
-    playerName.innerHTML = "Player: " + Player.nick;
-    lvlInfo.innerHTML  = "Level: " + 1;
-    scoreInfo.innerHTML = "Score: " + Player.score;
-    memory_board_wrapper.style.visibility = "visible";
-    memory_board.style.height = "0px";
-    memory_board.style.visibility = "visible";
-    startLevel(2, memory_board);
+function memoryBoard(lvl){
+    if(lvl === 10){
+        winn();
+    }
+    var lvlWidth  = [300, 400, 500, 400, 400, 600, 500, 600, 600, 600];
+    var lvlTime   = [12, 16, 20, 25, 30, 35, 40, 50, 60, 80];
+    var lvlTiles = [6, 8, 10, 12, 16, 18, 20, 24, 30, 36];
+    var Level = new Levels(lvl + 1, lvlWidth[lvl], lvlTime[lvl], lvlTiles[lvl]);
+
+    var Deck = generateDeck(Level.tilesCount);
+    Board.playerName.innerHTML = "Player: " + Player.nick;
+    Board.lvlInfo.innerHTML  = "Level: " + Level.level;
+    Board.scoreInfo.innerHTML = "Score: " + Player.score;
+    Board.memory_board_wrapper.style.visibility = "visible";
+    Board.memory_board.innerHTML = "";
+    Board.memory_board.style.width = Level.boardWidth + "px";
+    Board.memory_board.style.visibility = "visible";
+
+    setTimeout(function(){
+        addTiles(Board.memory_board, Deck, 0, Level);
+    }, 500);
 }

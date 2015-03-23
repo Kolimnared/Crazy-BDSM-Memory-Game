@@ -1,9 +1,9 @@
 /**
  * Created by user on 17.3.2015 г..
  */
-/*
-function CustomAlert(){
-    this.render = function(dialog){
+
+var Alert = new function CustomAlert(){
+    this.render = function(msg){
         var winW = window.innerWidth;
         var winH = window.innerHeight;
         var dialogoverlay = document.getElementById('dialog-overlay');
@@ -15,21 +15,14 @@ function CustomAlert(){
         dialogbox.style.top = "100px";
         dialogbox.style.display = "block";
         document.getElementById('dialog-box-head').innerHTML = "My Custom Alert";
-        document.getElementById('dialog-box-body').innerHTML = dialog;
-        document.getElementById('dialog-box-foot').innerHTML = '<button onclick="Alert.ok()">OK</button>';
+        document.getElementById('dialog-box-body').innerHTML = msg;
+        document.getElementById('dialog-box-foot').innerHTML = '<button onclick="Alert.ok(\''+msg+'\')">OK</button>';
     };
-    this.ok = function(){
+    this.ok = function(msg){
         document.getElementById('dialog-box').style.display = "none";
         document.getElementById('dialog-overlay').style.display = "none";
     };
-}
-
-function deletePost(id){
-    var db_id = id.replace("post_", "");
-    document.getElementById(id).remove();
-}
-
-*/
+};
 
 function cleanScreen(){
     if(document.getElementById("login-div")){
@@ -69,9 +62,6 @@ function CustomConfirm(){
             playerLoginScreen();
         };
     };
-
-
-
     this.no = function(){
         document.getElementById('dialog-box').style.display = "none";
         document.getElementById('dialog-overlay').style.display = "none";
@@ -79,7 +69,6 @@ function CustomConfirm(){
 }
 
 var Confirm = new CustomConfirm();
-
 
 /*
 function CustomPrompt(){

@@ -27,9 +27,8 @@ body #wrapper #memory-board-wrapper{
         }
 
     body #wrapper #memory-board-wrapper #memory-board{
-        visibility: hidden;
         width: 200px;
-        height: 150px;
+        height: 600px;
         margin:auto;
     }
 
@@ -56,7 +55,7 @@ body #wrapper #memory-board-wrapper div[id^="tile"]{
     width: 90px;
     height: 90px;
     margin: 5px;
-    background-image: url("../game/tile_bg.jpg");
+    background-image: url("../images/tile_bg.jpg");
     background-size: 100%;
     overflow: hidden;
     font-size: 30px;

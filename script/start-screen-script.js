@@ -4,6 +4,53 @@
 
 var Player = {nick: "", score: 0, gameOn: false};
 
+var SoundPlayer = new function soundPlayer(){
+    var mutter = false;
+    var startingSoundPlaying = true;
+    var background_sound = new Audio('sounds/background-sound.mp3');
+    var new_game_sound = new Audio('sounds/new-game.ogg');
+
+
+    this.playSound = function(soundPath){
+        var sound = new Audio(soundPath);
+        sound.play();
+    };
+
+    this.playBackgroundMusic = function(){
+        startingSoundPlaying = true;
+        if(mutter === false){
+            background_sound.play();
+            background_sound.loop = "true";
+        }
+    };
+
+    this.stopBackgroundSound = function(){
+        startingSoundPlaying = false;
+        background_sound.pause();
+    };
+
+    this.startNewGameSound = function(){
+        if(mutter === false){
+            new_game_sound.play();
+        }
+    };
+
+    this.muteAllSounds = function(){
+        if(mutter === false){
+            background_sound.pause();
+            mutter = true;
+            document.getElementById('mutter').innerHTML = "<img src=\'images/sounds-off.png\'/>";
+        }else{
+            mutter = false;
+            document.getElementById('mutter').innerHTML = "<img src=\'images/sounds-on.png\'/>";
+            if(startingSoundPlaying === true){
+                background_sound.play();
+            }
+
+        }
+    }
+};
+
 function playerLoginScreen(){
     Player.gameOn = true;
 
@@ -29,13 +76,26 @@ function playerLoginScreen(){
     loginDiv.appendChild(startButton);
     slideOpen(loginDiv, 450, 1.2);
 
+    nickInput.addEventListener('keyup', checkName);
+    nickInput.addEventListener('keydown', checkName);
+    function checkName(){
+        var regex = /[\\\\\\`]|[^A-za-z0-9]/gi;
+        if(nickInput.value.search(regex) > -1){
+            nickInput.value = nickInput.value.replace(regex, "");
+        }
+    }
+
     startButton.onclick = function(){
-        slideClose(loginDiv, 1.2);
-        Player.nick = nickInput.value;
-        setTimeout(function(){
-            loginDiv.remove();
-            memoryBoard();
-        }, 1200);
+        if(nickInput.value != ""){
+            slideClose(loginDiv, 1.2);
+            Player.nick = nickInput.value;
+            setTimeout(function(){
+                loginDiv.remove();
+                memoryBoard(0);
+            }, 1200);
+        }else{
+            Alert.render("Enter Player Name!");
+        }
     }
 }
 
@@ -72,51 +132,6 @@ function MainGame(){
         playerLoginScreen();
     }
 
-}
-
-var SoundPlayer = new soundPlayer();
-function soundPlayer(){
-    var mutter = false;
-    var startingSoundPlaying = true;
-    var background_sound = new Audio('sounds/background-sound.mp3');
-    var new_game_sound = new Audio('sounds/new-game.ogg');
-
-
-    this.playSound = function(soundPath){
-        var sound = new Audio(soundPath);
-        sound.play();
-    };
-
-    this.playBackgroundMusic = function(){
-        background_sound.play();
-        background_sound.loop = "true";
-    };
-
-    this.stopBackgroundSound = function(){
-        startingSoundPlaying = false;
-        background_sound.pause();
-    };
-
-    this.startNewGameSound = function(){
-        if(mutter === false){
-          new_game_sound.play();
-        }
-    };
-
-    this.muteAllSounds = function(){
-        if(mutter === false){
-            background_sound.pause();
-            mutter = true;
-            document.getElementById('mutter').innerHTML = "<img src=\'images/sounds-off.png\'/>";
-        }else{
-            mutter = false;
-            document.getElementById('mutter').innerHTML = "<img src=\'images/sounds-on.png\'/>";
-            if(startingSoundPlaying === true){
-                background_sound.play();
-            }
-
-        }
-    }
 }
 
 window.addEventListener("load", MainGame);
